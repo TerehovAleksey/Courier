@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<base:PageBase
+    x:Class="Courier.Pages.FastAddPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:base="clr-namespace:Courier.Pages"
+    xmlns:controls="clr-namespace:Courier.Controls"
+    xmlns:vm="clr-namespace:Courier.Core.ViewModels;assembly=Courier.Core"
+    Title="Быстрое добавление дня"
+    x:DataType="vm:FastAddPageViewModel">
+
+    <base:PageBase.PageContent>
+        <controls:InputContainer>
+            <controls:InputDate Title="Дата:" Value="{Binding Date}" />
+            <controls:InputTime Title="Время начала:" Value="{Binding StartTime}" />
+            <controls:InputTime Title="Время окончания:" Value="{Binding FinishTime}" />
+            <controls:InputText Title="Количество доставок:" Value="{Binding DeliveryCount}" />
+            <controls:InputText Title="Чаевые:" Value="{Binding AdditionalMoney, StringFormat='{0:F2}'}" />
+            <controls:InputText Title="Расстояние за день:" Value="{Binding Distance, StringFormat='{0:F2}'}" />
+            <controls:InputText Title="Примечание:" Value="{Binding Note}" />
+            <Button
+                Margin="0,0,0,20"
+                Command="{Binding SaveCommand}"
+                Text="Сохранить" />
+        </controls:InputContainer>
+    </base:PageBase.PageContent>
+
+</base:PageBase>

@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<base:PageBase
+    x:Class="Courier.Pages.DeliveryPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:base="clr-namespace:Courier.Pages"
+    xmlns:controls="clr-namespace:Courier.Controls"
+    xmlns:converters="clr-namespace:Courier.Converters"
+    xmlns:h="clr-namespace:Courier.Helpers"
+    xmlns:m="clr-namespace:Courier.Core.Models;assembly=Courier.Core"
+    xmlns:vm="clr-namespace:Courier.Core.ViewModels;assembly=Courier.Core"
+    Title="Доставка"
+    x:DataType="vm:DeliveryPageViewModel">
+
+    <base:PageBase.Resources>
+        <converters:EnumDisplayConverter x:Key="EnumDisplayConverter" />
+    </base:PageBase.Resources>
+
+    <base:PageBase.PageContent>
+        <controls:InputContainer>
+            <controls:InputText Title="Номер:" Value="{Binding Number}" />
+            <controls:InputText Title="Адрес:" Value="{Binding Address}" />
+            <controls:InputTime Title="Время:" Value="{Binding Time}" />
+            <VerticalStackLayout>
+                <Label Text="Тип доставки:" />
+                <Picker
+                    Title="{OnPlatform Default=Тип доставки,
+                                       WinUI=''}"
+                    ItemDisplayBinding="{Binding Name}"
+                    ItemsSource="{Binding DeliveryTypes}"
+                    SelectedItem="{Binding SelectedDeliveryType}" />
+            </VerticalStackLayout>
+            <VerticalStackLayout>
+                <Label Text="Оплата:" />
+                <Picker
+                    Title="{OnPlatform Default=Тип оплаты,
+                                       WinUI=''}"
+                    ItemDisplayBinding="{Binding ., Converter={StaticResource EnumDisplayConverter}}"
+                    ItemsSource="{h:EnumToItemSource EnumType={x:Type m:PaymentStatus}}"
+                    SelectedItem="{Binding SelectedPaymentStatus}" />
+            </VerticalStackLayout>
+            <VerticalStackLayout>
+                <Label Text="Статус:" />
+                <Picker
+                    Title="{OnPlatform Default=Статус заказа,
+                                       WinUI=''}"
+                    ItemDisplayBinding="{Binding ., Converter={StaticResource EnumDisplayConverter}, ConverterParameter={x:Type m:DeliveryStatus}}"
+                    ItemsSource="{h:EnumToItemSource EnumType={x:Type m:DeliveryStatus}}"
+                    SelectedItem="{Binding SelectedDeliveryStatus}" />
+            </VerticalStackLayout>
+            <controls:InputText Title="Стоимость:" Value="{Binding Price, StringFormat='{0:F2}'}" />
+            <controls:InputText Title="Стоимость доставки:" Value="{Binding Cost, StringFormat='{0:F2}'}" />
+            <Button Command="{Binding SaveCommand}" Text="Добавить" />
+        </controls:InputContainer>
+    </base:PageBase.PageContent>
+
+</base:PageBase>

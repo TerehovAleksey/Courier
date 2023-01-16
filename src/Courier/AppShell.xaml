@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Shell
+    x:Class="Courier.AppShell"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:pages="clr-namespace:Courier.Pages"
+    Shell.BackgroundColor="{StaticResource BorderColor}"
+    Shell.FlyoutBehavior="Disabled"
+    Shell.TabBarBackgroundColor="{StaticResource TabBarColor}"
+    Shell.TabBarForegroundColor="{StaticResource TextLightColor}"
+    Shell.TitleColor="{StaticResource TextLightColor}"
+    Shell.UnselectedColor="#ff921f">
+
+    <TabBar>
+        <Tab Title="Главная" Icon="home.png">
+            <ShellContent ContentTemplate="{DataTemplate pages:MainPage}" />
+        </Tab>
+        <Tab Title="Статистика" Icon="statistics.png">
+            <!--<ShellContent Title="Статистика дня" ContentTemplate="{DataTemplate pages:DayStatisticsPage}" />-->
+            <ShellContent Title="Статистика" ContentTemplate="{DataTemplate pages:StatisticsPage}" />
+        </Tab>
+        <Tab Title="Параметры" Icon="settings.png">
+            <ShellContent ContentTemplate="{DataTemplate pages:SettingsPage}" />
+        </Tab>
+    </TabBar>
+
+</Shell>

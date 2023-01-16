@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<base:PageBase
+    x:Class="Courier.Pages.StartDayPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:base="clr-namespace:Courier.Pages"
+    xmlns:controls="clr-namespace:Courier.Controls"
+    xmlns:vm="clr-namespace:Courier.Core.ViewModels;assembly=Courier.Core"
+    Title="Начать рабочий день"
+    x:DataType="vm:StartDayPageViewModel">
+
+    <base:PageBase.PageContent>
+        <controls:InputContainer>
+            <controls:InputTime Title="Время начала работы:" Value="{Binding StartTime}" />
+            <controls:InputText Title="Разменка:" Value="{Binding InitialMoney, StringFormat='{0:F2}'}" />
+            <Button Command="{Binding StartDayCommand}" Text="Начать день" />
+        </controls:InputContainer>
+    </base:PageBase.PageContent>
+
+</base:PageBase>

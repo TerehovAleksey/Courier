@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<base:PageBase
+    x:Class="Courier.Pages.StatisticsPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:base="clr-namespace:Courier.Pages"
+    xmlns:controls="clr-namespace:Courier.Controls"
+    xmlns:converters="clr-namespace:Courier.Converters"
+    xmlns:m="clr-namespace:Courier.Core.Models;assembly=Courier.Core"
+    xmlns:uim="clr-namespace:Courier.Core.UiModels;assembly=Courier.Core"
+    xmlns:vm="clr-namespace:Courier.Core.ViewModels;assembly=Courier.Core"
+    Title="Статистика"
+    x:DataType="vm:StatisticsPageViewModel">
+
+    <base:PageBase.Resources>
+        <converters:DayFullCostConverter x:Key="DayFullCostConverter" />
+    </base:PageBase.Resources>
+
+    <base:PageBase.PageContent>
+        <controls:InputContainer>
+            <VerticalStackLayout Padding="10,0,10,-5">
+                <controls:Label Title="Всего доставок:" Value="{Binding StatisticsModel.TotalCount}" />
+                <controls:Label Title="В среднем за неделю:" Value="{Binding StatisticsModel.MiddleForWeek, StringFormat='{0:F0}'}" />
+                <controls:Label Title="В среднем за доставку:" Value="{Binding StatisticsModel.MiddleForDelivery, StringFormat='{0:c}'}" />
+            </VerticalStackLayout>
+            <Grid>
+                <CollectionView
+                    Margin="0,10,0,0"
+                    ItemsSource="{Binding StatisticsModel.WeekStatistics}"
+                    SelectionMode="None">
+                    <CollectionView.ItemsLayout>
+                        <LinearItemsLayout Orientation="Vertical" />
+                    </CollectionView.ItemsLayout>
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate x:DataType="uim:WeekStatisticsUiModel">
+                            <Border
+                                Padding="10"
+                                BackgroundColor="Transparent"
+                                Stroke="{StaticResource BorderColor}"
+                                StrokeShape="RoundRectangle 10">
+                                <Grid RowDefinitions="Auto,Auto,Auto,*" VerticalOptions="StartAndExpand">
+                                    <controls:Label
+                                        Title="Неделя:"
+                                        Grid.Row="0"
+                                        HorizontalOptions="Start"
+                                        Value="{Binding Week}" />
+                                    <controls:Label
+                                        Title="ЗП: "
+                                        Grid.Row="0"
+                                        HorizontalOptions="End"
+                                        Value="{Binding Sum, StringFormat='{0:c}'}" />
+                                    <controls:Label
+                                        Title="Доставок:"
+                                        Grid.Row="1"
+                                        HorizontalOptions="Start"
+                                        Value="{Binding Deliveries}" />
+                                    <controls:Label
+                                        Title="Итог: "
+                                        Grid.Row="1"
+                                        HorizontalOptions="End"
+                                        Value="{Binding TotalSum, StringFormat='{0:c}'}" />
+                                    <BoxView
+                                        Grid.Row="2"
+                                        Margin="0,10,0,0"
+                                        HeightRequest="1"
+                                        HorizontalOptions="Fill"
+                                        Color="{StaticResource BorderColor}" />
+                                    <CollectionView
+                                        Grid.Row="3"
+                                        Margin="0,10,0,0"
+                                        ItemsSource="{Binding Days}"
+                                        SelectionChangedCommand="{Binding Source={RelativeSource AncestorType={x:Type vm:StatisticsPageViewModel}}, Path=SelectDayCommand}"
+                                        SelectionChangedCommandParameter="{Binding Source={RelativeSource Self}, Path=SelectedItem}"
+                                        SelectionMode="Single"
+                                        VerticalOptions="StartAndExpand">
+                                        <CollectionView.ItemsLayout>
+                                            <LinearItemsLayout Orientation="Vertical" />
+                                        </CollectionView.ItemsLayout>
+                                        <CollectionView.ItemTemplate>
+                                            <DataTemplate x:DataType="m:Day">
+                                                <Border
+                                                    Padding="5"
+                                                    BackgroundColor="Transparent"
+                                                    Stroke="{StaticResource BorderColor}"
+                                                    StrokeShape="RoundRectangle 5"
+                                                    StrokeThickness=".3">
+                                                    <Grid
+                                                        ColumnDefinitions="*, Auto"
+                                                        RowDefinitions="Auto, Auto"
+                                                        VerticalOptions="StartAndExpand">
+                                                        <Label
+                                                            Grid.Row="0"
+                                                            Grid.Column="0"
+                                                            Text="{Binding Date, StringFormat='{0:dd.MM.yyy}'}" />
+                                                        <Label
+                                                            Grid.Row="1"
+                                                            Grid.Column="0"
+                                                            Text="{Binding Count, StringFormat='Доставок: {0}'}" />
+                                                        <Label
+                                                            Grid.Row="0"
+                                                            Grid.Column="1"
+                                                            HorizontalOptions="End"
+                                                            Text="{Binding ., Converter={StaticResource DayFullCostConverter}, StringFormat='Доход: {0:c}'}" />
+                                                        <Label
+                                                            Grid.Row="1"
+                                                            Grid.Column="1"
+                                                            HorizontalOptions="End"
+                                                            Text="{Binding Expenses, StringFormat='Затраты: {0:c}'}" />
+                                                    </Grid>
+                                                </Border>
+                                            </DataTemplate>
+                                        </CollectionView.ItemTemplate>
+                                    </CollectionView>
+                                </Grid>
+                            </Border>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+            </Grid>
+        </controls:InputContainer>
+    </base:PageBase.PageContent>
+
+</base:PageBase>

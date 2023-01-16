@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<base:PageBase
+    x:Class="Courier.Pages.SettingsPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:base="clr-namespace:Courier.Pages"
+    xmlns:controls="clr-namespace:Courier.Controls"
+    xmlns:m="clr-namespace:Courier.Core.Models;assembly=Courier.Core"
+    xmlns:vm="clr-namespace:Courier.Core.ViewModels;assembly=Courier.Core"
+    Title="Параметры"
+    x:DataType="vm:SettingsPageViewModel">
+
+    <base:PageBase.PageContent>
+        <controls:InputContainer>
+            <controls:InputText Title="Стоимость топлива:" Value="{Binding FuelCost, StringFormat='{0:F2}'}" />
+            <controls:InputText Title="Расход топлива (литров на 100км):" Value="{Binding FuelExpense, StringFormat='{0:F2}'}" />
+            <controls:InputText
+                Title="Час работы:"
+                IsEnabled="False"
+                Value="{Binding OneHourCost, StringFormat='{0:F2}'}" />
+            <VerticalStackLayout>
+                <Label Text="Типы доставок:" />
+                <CollectionView
+                    EmptyView="Нет элементов для отображения"
+                    ItemsSource="{Binding DeliveryTypes}"
+                    SelectedItem="{Binding SelectedDeliveryType}"
+                    SelectionChangedCommand="{Binding EditDeliveryTypeCommand}"
+                    SelectionMode="Single">
+                    <CollectionView.ItemsLayout>
+                        <LinearItemsLayout ItemSpacing="5" Orientation="Vertical" />
+                    </CollectionView.ItemsLayout>
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate x:DataType="m:DeliveryType">
+                            <Border
+                                Padding="10"
+                                BackgroundColor="Transparent"
+                                Stroke="{StaticResource BorderColor}"
+                                StrokeShape="RoundRectangle 10">
+                                <Grid ColumnDefinitions="*,Auto">
+                                    <Label
+                                        Grid.Column="0"
+                                        Text="{Binding Name}"
+                                        TextColor="{StaticResource BorderColor}" />
+                                    <Label
+                                        Grid.Column="1"
+                                        Text="{Binding Cost, StringFormat='{0:c}'}"
+                                        TextColor="{StaticResource BorderColor}" />
+                                </Grid>
+                            </Border>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+            </VerticalStackLayout>
+            <Button Command="{Binding AddDeliveryTypeCommand}" Text="Добавить тип доставки" />
+        </controls:InputContainer>
+    </base:PageBase.PageContent>
+
+</base:PageBase>

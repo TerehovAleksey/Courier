@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<base:PageBase
+    x:Class="Courier.Pages.DayStatisticsPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:base="clr-namespace:Courier.Pages"
+    xmlns:controls="clr-namespace:Courier.Controls"
+    xmlns:converters="clr-namespace:Courier.Converters"
+    xmlns:m="clr-namespace:Courier.Core.Models;assembly=Courier.Core"
+    xmlns:vm="clr-namespace:Courier.Core.ViewModels;assembly=Courier.Core"
+    Title="Статистика дня"
+    x:DataType="vm:DayStatisticsPageViewModel">
+
+    <base:PageBase.Resources>
+        <converters:DeliveryPaymentStatusToColorConverter x:Key="DeliveryPaymentStatusToColorConverter" />
+        <converters:EnumDisplayConverter x:Key="EnumDisplayConverter" />
+    </base:PageBase.Resources>
+
+    <base:PageBase.PageContent>
+        <controls:InputContainer>
+            <VerticalStackLayout>
+                <controls:Label Title="Дата:" Value="{Binding Date, StringFormat='{0:dd.MM.yyy}'}" />
+                <controls:Label Title="Время:" Value="{Binding TimePeriod}" />
+                <controls:Label Title="Доставок:" Value="{Binding DeliveryCount}" />
+                <controls:Label Title="За доставки:" Value="{Binding DayCost, StringFormat='{0:c}'}" />
+                <controls:Label Title="Чаевые:" Value="{Binding AdditionalMoney, StringFormat='{0:c}'}" />
+                <controls:Label Title="Километров:" Value="{Binding Distance, StringFormat='{0:F2}'}" />
+                <controls:Label Title="Затраты:" Value="{Binding Expenses, StringFormat='{0:c}'}" />
+                <controls:Label Title="Итого:" Value="{Binding Income, StringFormat='{0:c}'}" />
+            </VerticalStackLayout>
+            <VerticalStackLayout>
+                <Label Text="Доставки:" />
+                <CollectionView
+                    EmptyView="Нет элементов для отображения"
+                    ItemsSource="{Binding Deliveries}"
+                    SelectionMode="None">
+                    <CollectionView.ItemsLayout>
+                        <LinearItemsLayout ItemSpacing="5" Orientation="Vertical" />
+                    </CollectionView.ItemsLayout>
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate x:DataType="m:Delivery">
+                            <Border
+                                Padding="10,5"
+                                BackgroundColor="Transparent"
+                                Stroke="{StaticResource BorderColor}"
+                                StrokeShape="RoundRectangle 10">
+                                <Grid ColumnDefinitions="*,Auto" RowDefinitions="Auto,Auto">
+                                    <Label Grid.Row="0" Grid.Column="0">
+                                        <Label.FormattedText>
+                                            <FormattedString>
+                                                <Span FontAttributes="Bold" Text="{Binding Number}" />
+                                                <Span Text=" " />
+                                                <Span Text="{Binding PaymentStatus, Converter={StaticResource EnumDisplayConverter}, StringFormat='({0})'}" TextTransform="Lowercase" />
+                                            </FormattedString>
+                                        </Label.FormattedText>
+                                    </Label>
+                                    <Label
+                                        Grid.Row="1"
+                                        Grid.Column="0"
+                                        Text="{Binding Address}" />
+                                    <Label
+                                        Grid.Row="0"
+                                        Grid.Column="1"
+                                        HorizontalOptions="End"
+                                        Text="{Binding Time, StringFormat='{0:t}'}" />
+                                    <Label
+                                        Grid.Row="1"
+                                        Grid.Column="1"
+                                        HorizontalOptions="End"
+                                        Text="{Binding Price, StringFormat='{0:c}'}"
+                                        TextColor="{Binding ., Converter={StaticResource DeliveryPaymentStatusToColorConverter}}" />
+                                </Grid>
+                            </Border>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+            </VerticalStackLayout>
+        </controls:InputContainer>
+    </base:PageBase.PageContent>
+
+</base:PageBase>

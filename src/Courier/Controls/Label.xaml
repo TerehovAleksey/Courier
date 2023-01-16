@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Label
+    x:Class="Courier.Controls.Label"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
+    <Label.FormattedText>
+        <FormattedString>
+            <Span x:Name="TitleSpan" />
+            <Span Text=" " />
+            <Span x:Name="TextSpan" FontAttributes="Bold" />
+        </FormattedString>
+    </Label.FormattedText>
+</Label>

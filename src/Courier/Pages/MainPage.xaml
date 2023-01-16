@@ -1,0 +1,53 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<base:PageBase
+    x:Class="Courier.Pages.MainPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:base="clr-namespace:Courier.Pages"
+    xmlns:controls="clr-namespace:Courier.Controls"
+    xmlns:converters="clr-namespace:Courier.Converters"
+    xmlns:vm="clr-namespace:Courier.Core.ViewModels;assembly=Courier.Core"
+    Title="Главная"
+    x:DataType="vm:MainPageViewModel">
+
+    <base:PageBase.Resources>
+        <converters:BoolInvertConverter x:Key="BoolInvertConverter" />
+    </base:PageBase.Resources>
+
+    <base:PageBase.PageContent>
+        <Grid>
+            <controls:InputContainer>
+                <Image
+                    Margin="0,20,0,50"
+                    HeightRequest="250"
+                    HorizontalOptions="Center"
+                    Source="courier_360.png"
+                    WidthRequest="250" />
+
+                <VerticalStackLayout
+                    HorizontalOptions="Center"
+                    IsVisible="{Binding IsDayOpen}"
+                    Spacing="10">
+                    <controls:Label Title="Время начала:" Value="{Binding StartTime}" />
+                    <controls:Label Title="Заказов:" Value="{Binding Count}" />
+                    <controls:Label Title="Наличными:" Value="{Binding Price, StringFormat='{0:c}'}" />
+                    <controls:Label Title="Заработано:" Value="{Binding Cost, StringFormat='{0:c}'}" />
+                </VerticalStackLayout>
+
+                <Button
+                    Command="{Binding StartDayCommand}"
+                    HorizontalOptions="Center"
+                    IsVisible="{Binding IsDayOpen, Converter={StaticResource BoolInvertConverter}}"
+                    Text="Начать день" />
+
+                <Button
+                    Command="{Binding FinishDayCommand}"
+                    HorizontalOptions="Center"
+                    IsVisible="{Binding IsDayOpen}"
+                    Text="Закончить день" />
+
+            </controls:InputContainer>
+            <Button Command="{Binding AddCommand}" Style="{StaticResource FabButton}" />
+        </Grid>
+    </base:PageBase.PageContent>
+</base:PageBase>
